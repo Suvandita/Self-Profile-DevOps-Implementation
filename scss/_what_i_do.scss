@@ -1,0 +1,59 @@
+.what_i_do{
+    max-height:50%;
+    &_content{
+        max-width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        color:white;
+        margin:0 22px;
+        .wrap{
+            display: block;
+            width:50%;
+            .what_i_do_content_individual{
+                display: flex;
+                align-items: center;
+                margin:0 12px 48px;
+                &_icon{
+                    background-color: rgb(33, 37, 41);
+                    border-radius: 5px;
+                    height: 70px;
+                    min-width: 70px;
+                    position: relative;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    i{
+                        color:$btn_color;
+                        @include position_center();
+                        font-size: 30px;
+                    }
+                }
+                &_info{
+                    padding:0 0 0 30px;
+                    height:100%;
+                    display: flex;
+                    align-items: center;
+                    .sub-head{
+                        
+                        color:white;
+                        font-size: 20px;
+
+                    }
+                    
+                }
+            } 
+        }
+    }
+}
+@media screen and (max-width:900px) {
+    .what_i_do{
+        &_content{
+            flex-direction: column;
+            .wrap{
+                width: 100%;
+            }
+            
+        }
+    }
+    
+}

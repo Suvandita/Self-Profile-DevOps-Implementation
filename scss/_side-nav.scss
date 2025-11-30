@@ -1,0 +1,253 @@
+.side-nav{
+    display: block;
+    background-color: rgb(17, 20, 24) ;
+    color: white;
+    @include flex_center(column);
+    padding: 20px 20px;
+    position:fixed;
+    height: 100vh;         
+    width: 260px;
+    overflow: auto;
+    scrollbar-width: none;
+    z-index: 2;
+    &_img_wrap{
+        @include flex_center(column);
+        .side-nav_img{
+            img{
+                border-radius: 50%;
+                border: 8px solid rgb(76, 77, 77);;
+                height:150px;
+                width:150px;
+                object-fit:cover;
+            }
+            margin-bottom: 4px;
+        }
+        .name{
+            font-size: 19px;
+            width:100%;
+            font-family: "Poppins",sans-serif;
+        }
+        &:hover{
+            cursor:pointer;
+        }
+        
+    }
+    
+    &_link_wrap{
+        width: 100%;
+        .side-nav_link{
+            margin:25px 0px;
+            @include flex_center(column);
+            &_li {
+                width:100%;
+                a{
+                     display: block;
+                     padding:10px 0px;
+                     text-align: center;
+                     font-size: 16px;
+                     @include flex_center(column);
+                     &:hover{
+                         color:$btn_color;
+                         cursor: pointer;
+                     }
+                 }
+            }
+                
+                
+        }
+        
+    }
+    &_icon_wrapper{
+        .side-nav_icon{
+            @include flex_center(row);
+            &_li {
+                @include tooltips();
+                a{   
+                    position: relative;
+                    height:26px;
+                    width:26px;
+                    @include flex_center(row);
+                    i{
+                        font-size: 14px;
+                        &:hover{
+                            color: $btn_color;
+                        }
+                    }
+                    .imageLC{
+                        font-size: 14px;
+                        &:hover{
+                            border:1px solid $btn_color;
+                        }
+                    }
+
+            
+                }
+                }
+        }
+    }
+}
+
+
+.top-na{
+    display: none;
+    width:100%;
+    height: 65px;
+    background-color: rgb(17, 20, 24);
+    color:white;
+    position: fixed;
+    z-index: 3;
+    
+
+    &v{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width:100%;
+        height: 100%;
+        padding: 0 12px;
+        &_left{
+            font-size: 21px;
+        }
+        &_right{
+            display: flex;
+            &1{
+                &_icon{
+                    @include flex_center(row);
+                    li {
+                        .tooltip {
+                            position: relative;
+                            text-align: center;
+                          }
+                          .tooltip .tooltiptext {
+                            visibility: hidden;
+                            background-color: black;
+                            border-radius: 6px;
+                            padding: 5px;
+                            position: absolute;
+                            z-index:3 ;
+                            top:100%;
+                          }
+                          
+                          .tooltip .tooltiptext::before {
+                            content: "";
+                            position: absolute;
+                            bottom: 100%;
+                            left: 50%;
+                            border-width: 5px;
+                            border-style: solid;
+                            border-color: transparent transparent black transparent;
+                          }
+                          
+                          .tooltip:hover .tooltiptext {
+                            visibility: visible;
+                          }
+                        a{   
+                            position: relative;
+                            height:26px;
+                            width:26px;
+                            @include flex_center(row);
+                            i{
+                                font-size: 14px;
+                                &:hover{
+                                    color: $btn_color;
+                                }
+                            }
+                            .imageLC{
+                                font-size: 14px;
+                                &:hover{
+                                    border:1px solid $btn_color;
+                                }
+                            }
+        
+                    
+                        }
+                    }
+                }
+            }
+            
+            &2{
+                &_button{
+                    height: 26px;
+                    width:26px;
+                    @include flex_center(row);
+
+                    i{
+                        font-size: 14px;
+                        color:white;
+                    }
+                    :hover{
+                        cursor: pointer;
+                    }
+                }
+                
+                
+            }
+        }
+    }
+    .top-nav_link{
+        display: none;
+        background-color: rgb(0, 0, 0,0.9);
+        color:white;
+        width:100%;
+        padding: 0 12px;
+        position:absolute;
+        z-index: 3;
+        &:hover{
+            cursor: pointer;
+        }
+        li {
+            width:100%;
+            a{
+                 display: block;
+                 padding:10px 0px;
+                 text-align: left;
+                 font-size: 16px;
+                 border-bottom:1px solid white; 
+                 display: flex;
+                 flex-direction: column;
+                 &:hover{
+                     color:$btn_color;
+                     cursor: pointer;
+                 }
+             }
+        }
+
+        
+    }
+}
+    
+    
+    
+
+    
+
+
+@media screen and (max-width: 1070px) {
+   .side-nav{
+        display: none;
+    }
+    .top-na{
+        display: block;
+    }
+
+    .pages{
+        margin-left: 0;
+        min-height: 100%;
+        max-width:100%;
+    }
+}
+@media screen and (max-height: 600px) {
+    .side-nav{
+        display: none;
+    }
+    .top-na{
+        display: block;
+    }
+
+    .pages{
+        margin-left: 0;
+        min-height: 100%;
+        max-width:100%;
+    }
+     
+ }
