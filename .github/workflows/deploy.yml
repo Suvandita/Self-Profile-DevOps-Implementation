@@ -1,32 +1,53 @@
 name: Deploy Website to Render
 
 on:
-  push:
-    branches: ["main"]
+push:
+branches: ["main"]
+workflow_dispatch: # allows manual triggering
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+build_and_deploy:
+runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+steps:
+  # 1. Checkout repo
+  - name: Checkout code
+    uses: actions/checkout@v3
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+  # 2. Install Node (for SASS compilation)
+  - name: Setup Node
+    uses: actions/setup-node@v3
+    with:
+      node-version: 18
 
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/mywebsite:latest .
+  # 3. Install dependencies (if you use npm for SASS)
+  - name: Install dependencies
+    run: npm install || echo "No package.json, skipping"
 
-      - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/mywebsite:latest
+  # 4. Compile SASS to CSS
+  - name: Compile SASS
+    run: npx sass scss/:css/ || echo "No SASS found, skipping"
 
-      - name: Trigger Render Deploy
-        run: |
-          curl -X POST \
-          -H "Accept: application/json" \
-          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-          https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys
+  # 5. Log in to Docker Hub
+  - name: Log in to Docker Hub
+    uses: docker/login-action@v2
+    with:
+      username: ${{ secrets.DOCKER_USERNAME }}
+      password: ${{ secrets.DOCKER_PASSWORD }}
+
+  # 6. Build Docker image with unique tag (commit SHA)
+  - name: Build Docker image
+    run: docker build -t ${{ secrets.DOCKER_USERNAME }}/mywebsite:${{ github.sha }} .
+
+  # 7. Push Docker image
+  - name: Push Docker image
+    run: docker push ${{ secrets.DOCKER_USERNAME }}/mywebsite:${{ github.sha }}
+
+  # 8. Trigger Render deploy with the new image
+  - name: Trigger Render Deploy
+    run: |
+      curl -X POST \
+      -H "Accept: application/json" \
+      -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+      https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys \
+      -d '{"dockerImage":"'"${{ secrets.DOCKER_USERNAME }}/mywebsite:${{ github.sha }}"'"}'
